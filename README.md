@@ -1,17 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Wheel of Fortune
+
+This is another one of those wheel of names that they do at your workplace's all hands.
+
+## Motivation
+
+This is a general front-endy project for me to flex on my skills, showcase some good TDD and devops practices.
+I'm not so sure how far this project will go, but i am sure getting a headache watching my wheel spin a couple of times
+
+## Tech stack
+
+- [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
+- [Typescript](https://www.typescriptlang.org/)
+- [React hook form](https://react-hook-form.com/)
+- [Jest](https://jestjs.io/docs/getting-started)
+- [React testing library](https://testing-library.com/)
+
+This repository also has [commitlint](https://commitlint.js.org/) and [husky](https://github.com/typicode/husky) configured to enforce conventional commit rules
 
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
