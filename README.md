@@ -4,8 +4,7 @@ This is another one of those wheel of names that they do at your workplace's all
 
 ## Motivation
 
-This is a general front-endy project for me to flex on my skills, showcase some good TDD and devops practices.
-I'm not so sure how far this project will go, but i am sure getting a headache watching my wheel spin a couple of times
+This is a general front-endy project for me to show some frontend skills, TDD practices and basic devops stuff.
 
 ## Tech stack
 
