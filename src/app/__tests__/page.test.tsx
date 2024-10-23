@@ -5,7 +5,6 @@ import Home from "@/app/page";
 describe("Home page", () => {
   it("should render the page", () => {
     render(<Home />);
-    screen.debug();
     const title = screen.getByRole("heading", { name: /wheel of fortune/i });
     expect(title).toBeInTheDocument();
   });
@@ -28,6 +27,8 @@ describe("Home page", () => {
 
     const spinButton = screen.getByRole("button", { name: /spin/i });
     await userEvent.click(spinButton);
+
+    await new Promise((r) => setTimeout(r, 3000));
     const prize = await screen.findByText(
       /Congratulations! you won: (?:apple|orange)/i
     );

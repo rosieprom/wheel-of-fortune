@@ -26,18 +26,19 @@ describe("Wheel", () => {
     "Yuzu",
     "Zucchini",
   ];
-  const onSpinEnd = jest.fn();
 
   it("should render a wheel", () => {
-    render(<Wheel items={items} onSpinEnd={onSpinEnd} />);
+    render(<Wheel items={items} />);
     const wheel = screen.getByTestId("wheel");
     expect(wheel).toBeInTheDocument();
   });
 
   it("should let us spin the wheel", async () => {
-    render(<Wheel items={items} onSpinEnd={onSpinEnd} />);
+    render(<Wheel items={items} />);
     const spinButton = screen.getByRole("button", { name: /spin/i });
     await userEvent.click(spinButton);
-    expect(onSpinEnd).toHaveBeenCalled();
+    await new Promise((r) => setTimeout(r, 3000));
+    const prize = screen.getByText(/Congratulations! You won: /);
+    expect(prize).toBeInTheDocument();
   });
 });

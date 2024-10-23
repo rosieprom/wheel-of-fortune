@@ -12,16 +12,10 @@ export default function Home() {
     name: "items",
   });
 
-  console.log({ fields });
   const [wheelItems, setWheelItems] = useState([]);
-  const [prize, setPrize] = useState("");
 
   const onSubmit = (data: any) => {
     setWheelItems(data.items.map((item: any) => item.item));
-  };
-
-  const handleSpinEnd = (prize: any) => {
-    setPrize(prize);
   };
 
   return (
@@ -46,56 +40,62 @@ export default function Home() {
                   Add an item
                 </Button>
                 {fields.length > 0 && (
-                  <>
-                    <ul>
-                      {fields.map((item, index) => {
-                        return (
-                          <li key={item.id}>
-                            <div className="flex items-center gap-3">
-                              <Controller
-                                render={({ field }) => (
-                                  <Input
-                                    variant="bordered"
-                                    label="Item"
-                                    type="item"
-                                    {...(field as any)}
-                                  />
-                                )}
-                                name={`items.${index}.item`}
-                                control={control}
-                              />
-                              <Button
-                                type="button"
-                                color="danger"
-                                onClick={() => remove(index)}
-                              >
-                                Remove Item
-                              </Button>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                  <div className="grid gap-2 w-full">
+                    {fields.map((item, index) => {
+                      return (
+                        <div key={item.id} className="w-full">
+                          <div className="flex items-center gap-3">
+                            <Controller
+                              render={({ field }) => (
+                                <Input
+                                  variant="flat"
+                                  label="Item"
+                                  type="item"
+                                  {...(field as any)}
+                                />
+                              )}
+                              name={`items.${index}.item`}
+                              control={control}
+                            />
+                            <Button
+                              type="button"
+                              color="danger"
+                              onClick={() => remove(index)}
+                            >
+                              Remove Item
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
                     <Button
                       isDisabled={fields.length === 0 || !wheelItems}
                       type="submit"
                     >
                       Submit
                     </Button>
-                  </>
+                  </div>
                 )}
               </div>
             </form>
             {wheelItems.length > 0 && (
-              <div className="flex flex-col gap-4">
-                <h2 className="text-2xl font-bold">Wheel Items</h2>
-                <ul>
-                  {wheelItems.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-                <Wheel items={wheelItems} onSpinEnd={handleSpinEnd} />
-                {prize && <p>Congratulations! You won: {prize}</p>}
+              <div className="grid grid-cols-4 gap-4">
+                <h2 className="col-span-4 text-2xl font-bold text-center">
+                  Wheel Items
+                </h2>
+                <div className="col-span-1">
+                  <p className="text-sm text-center">Your Entries</p>
+                  <ul>
+                    {wheelItems.map((item, index) => (
+                      <li key={index} className="text-center">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="col-span-3">
+                  <Wheel items={wheelItems} />
+                </div>
               </div>
             )}
           </div>

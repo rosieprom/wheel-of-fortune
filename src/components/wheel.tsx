@@ -4,22 +4,15 @@ import { generateRandomColors } from "../utils/generate-random-colour";
 
 interface WheelProps {
   items: string[];
-  onSpinEnd: (prize: string) => void;
 }
 
-const Wheel: React.FC<WheelProps> = ({ items, onSpinEnd }) => {
+const Wheel: React.FC<WheelProps> = ({ items }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const markerRef = useRef<HTMLCanvasElement>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
-  const [colors, setColors] = useState<string[]>([]);
-
-  const spin = () => {
-    setSpinning(true);
-    const randomRotation = Math.floor(Math.random() * 360) + 720; // At least 2 full rotations
-    setRotation(randomRotation);
-    const prizeIndex = Math.floor(rotation % 360);
-    onSpinEnd(items[prizeIndex]);
-  };
+  const [colors, setColors] = useState<String[]>([]);
+  const [prize, setPrize] = useState("");
 
   useEffect(() => {
     setColors(generateRandomColors(items.length));
@@ -55,7 +48,7 @@ const Wheel: React.FC<WheelProps> = ({ items, onSpinEnd }) => {
       context.closePath();
 
       // Set segment color
-      context.fillStyle = colors[index % colors.length];
+      context.fillStyle = colors[index % colors.length] as any;
       context.fill();
 
       // Draw text in the segment
@@ -77,8 +70,47 @@ const Wheel: React.FC<WheelProps> = ({ items, onSpinEnd }) => {
     context.restore();
   }, [items, rotation, spinning, colors]);
 
+  useEffect(() => {
+    // Draw the marker
+    const marker = markerRef.current;
+    if (!marker) return;
+    const markerContext = marker.getContext("2d");
+    if (!markerContext) return;
+
+    markerContext.clearRect(0, 0, marker.width, marker.height);
+    markerContext.beginPath();
+    markerContext.moveTo(75, 50);
+    markerContext.lineTo(100, 75);
+    markerContext.lineTo(100, 25);
+    markerContext.closePath();
+    markerContext.fillStyle = "#991b1b";
+    markerContext.fill();
+  }, []);
+
+  const spin = () => {
+    if (spinning) return;
+    setSpinning(true);
+    const randomRotation = Math.floor(Math.random() * 360) + 720; // At least 2 full rotations
+    setRotation(randomRotation);
+
+    setTimeout(() => {
+      setSpinning(false);
+      const normalizedRotation = randomRotation % 360;
+      const anglePerItem = 360 / items.length;
+      const index =
+        Math.floor((360 - normalizedRotation) / anglePerItem) % items.length;
+      setPrize(items[index]);
+    }, 3000); // Spin duration
+  };
+
   return (
-    <div>
+    <div className="overflow-hidden">
+      <canvas
+        ref={markerRef}
+        width={100}
+        height={100}
+        className="relative z-10 top-72 left-[400px]"
+      />
       <canvas
         ref={canvasRef}
         width={500}
@@ -89,9 +121,11 @@ const Wheel: React.FC<WheelProps> = ({ items, onSpinEnd }) => {
         }}
         data-testid="wheel"
       />
+
       <Button onClick={spin} disabled={spinning}>
         Spin
       </Button>
+      {prize && <p>Congratulations! You won: {prize}</p>}
     </div>
   );
 };
