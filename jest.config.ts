@@ -6,12 +6,23 @@ const createJestConfig = nextJest({
 });
 
 const config: Config = {
-  moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
-  testEnvironment: "jsdom",
-  moduleDirectories: ["node_modules", "src/__tests__", "components/__tests__"],
+  clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts"],
   coverageDirectory: "coverage",
+  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts"],
+  coverageProvider: "v8",
+  testEnvironment: "jsdom",
+  testEnvironmentOptions: {
+    customExportConditions: [""],
+  },
+  setupFilesAfterEnv: ["jest-canvas-mock"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1", // Map @ to src
+    "^lodash-es$": "lodash",
+  },
+  workerIdleMemoryLimit: 512,
+  moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
+  moduleDirectories: ["node_modules", "src/__tests__", "components/__tests__"],
   coveragePathIgnorePatterns: [
     "/node_modules/",
     "/coverage",
